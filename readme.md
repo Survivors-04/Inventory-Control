@@ -13,7 +13,7 @@ source venv/bin/activate
 .\venv\Scripts\activate
 ```
 
-#com o seu ambiente venv ativado
+com o seu ambiente venv ativado
 instalar requirements.txt
 ```bash
 pip install -r requirements.txt
