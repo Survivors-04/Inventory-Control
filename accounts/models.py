@@ -11,3 +11,4 @@ class Account(AbstractUser):
     telephone = models.CharField(max_length=12, null=True)
     password = models.CharField(max_length=100, null=False)
     is_superuser = models.BooleanField(default=False)
+
