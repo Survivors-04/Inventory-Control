@@ -16,7 +16,7 @@ class ProductSerializer(serializers.ModelSerializer):
             "category_id",
             "account_id",
         ] 
-        read_only_fields = ["id", "category_id", "account_id",]
+        read_only_fields = ["id", "account_id",]
 
     
     def create(self, validated_data:dict)-> Product:
