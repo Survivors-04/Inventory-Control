@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAdminUser
 class ProductView(ListCreateAPIView, RetrieveUpdateDestroyAPIView):
 
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAdminUser]
+    permission_classes     = [IsAdminUser]
 
     serializer_class = ProductSerializer
     queryset         = Product.objects.all()
