@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAdminUser
 
 
 class ProductView(ListCreateAPIView, RetrieveUpdateDestroyAPIView):
-    
+
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAdminUser]
 
@@ -15,11 +15,10 @@ class ProductView(ListCreateAPIView, RetrieveUpdateDestroyAPIView):
 
 
     def perform_create(self, serializer:ProductSerializer) -> None:
-
         serializer.save(account_id=self.request.user.id)
 
 
     def get_queryset(self):
         product_id = self.kwargs['pk']
-        return self.queryset.filter(produc_id=product_id)
+        return self.queryset.filter(id=product_id)
 
