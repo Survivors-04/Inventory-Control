@@ -22,3 +22,4 @@ class ProductView(ListCreateAPIView, RetrieveUpdateDestroyAPIView):
         product_id = self.kwargs['pk']
         return self.queryset.filter(id=product_id)
 
+
