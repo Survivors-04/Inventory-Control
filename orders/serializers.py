@@ -14,14 +14,13 @@ class OrderSerializer(serializers.ModelSerializer):
             "is_sent",
             "account_id",
             "total_price",
-            "name_dispatcher",
-
         ]
         read_only_fields = [
             "id",
             "sent_at",
             "created_at",
             "account_id",
+            "name_dispatcher",
         ]
 
     def create(self, validated_data:dict) -> Order:

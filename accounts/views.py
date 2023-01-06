@@ -22,23 +22,3 @@ class AccountDetailedView(RetrieveUpdateDestroyAPIView):
     queryset = Account.objects.all()
 
     lookup_url_kwarg = "pk"
-
-
-
-
-
-    
-# class AccountView(ListCreateAPIView):
-#     authentication_classes = [JWTAuthentication]
-#     permission_classes = [IsAuthenticated]
-#     serializer_class = AccountSerializer
-
-#     def get_queryset(self):
-#         return Account.objects.filter(id=self.kwargs["pk"])
-        
-
-#     def perform_create(self, serializer):
-
-#         account = get_object_or_404(Account, id=self.kwargs["pk"])
-#         serializer.save(account)
-    
