@@ -1,23 +1,32 @@
-from rest_framework.generics import ListCreateAPIView
+from rest_framework import generics
 from .serializers import OrderSerializer
 from .models import Order
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAuthenticated
+from .permissions import IsManagerOrOrderOwner
+from accounts.permissions import IsManager
 
 
-class OrderView(ListCreateAPIView):
-
+class OrderManagerView(generics.UpdateAPIView, generics.DestroyAPIView, generics.ListAPIView):
     authentication_classes = [JWTAuthentication]
-    permission_classes     = [IsAdminUser]
+    permission_classes = [IsAuthenticated, IsManager]
+
 
     serializer_class = OrderSerializer
-    queryset         = Order.objects.all()
 
+
+    queryset = Order.objects.all()
+    
 
     def perform_create(self, serializer):
         serializer.save(account=self.request.user)
-    
+
+
+class OrderUserView(generics.CreateAPIView, generics.RetrieveAPIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated, IsManagerOrOrderOwner]
 
     def get_queryset(self):
-        order_id = self.kwargs['pk']
-        return self.queryset.filter(id=order_id)
+        if self.request.method is "POST" and not self.request.user.is_superuser:
+            return Order.objects.all()
+        return Order.objects.all()
