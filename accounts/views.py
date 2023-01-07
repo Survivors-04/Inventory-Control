@@ -25,10 +25,4 @@ class AccountDetailedView(generics.RetrieveUpdateDestroyAPIView):
 
     lookup_url_kwarg = "pk"
 
-class CodeView(generics.ListCreateAPIView, generics.RetrieveUpdateDestroyAPIView):
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated, IsManager]
-
-    queryset = Account.objects.all()
-    serializer_class = AccountSerializer
 
