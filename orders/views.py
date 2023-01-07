@@ -27,8 +27,9 @@ class OrderUserView(generics.CreateAPIView, generics.RetrieveAPIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated, IsManagerOrOrderOwner]
 
+    serializer_class = OrderSerializer
     def get_queryset(self):
-        if self.request.method is "POST" and not self.request.user.is_superuser:
+        if self.request.method == "POST" and not self.request.user.is_superuser:
             return Order.objects.all()
         return Order.objects.all()
 
