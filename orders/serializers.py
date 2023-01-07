@@ -22,6 +22,7 @@ class OrderSerializer(serializers.ModelSerializer):
             "sent_at",
             "created_at",
             "account_id",
+            "name_dispatcher",
         ]
 
     def create(self, validated_data:dict) -> Order:
