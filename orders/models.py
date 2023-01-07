@@ -3,6 +3,7 @@ import uuid
 from products.models import Product
 from accounts.models import Account
 
+
 class Order(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created_at = models.DateField(auto_now_add=True, null=False)
@@ -13,8 +14,4 @@ class Order(models.Model):
     is_sent = models.BooleanField(default=False)
     name_dispatcher = models.CharField(max_length=100, null=False)
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
-
-class ProductsOrder(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    product = models.ManyToManyField("products.Product", related_name="products_orders")

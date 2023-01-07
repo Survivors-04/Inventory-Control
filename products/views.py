@@ -8,14 +8,22 @@ class ProductView(generics.ListAPIView ):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
-
     serializer_class = ProductSerializer
     queryset         = Product.objects.all()
+
 
 
     def perform_create(self, serializer:ProductSerializer) -> None:
         serializer.save(account_id=self.request.user.id)
 
+            
+
+
+class ProductDetailView(generics.CreateAPIView, generics.RetrieveUpdateDestroyAPIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+    
+    serializer_class = ProductSerializer
 
 class ProductDetailView(generics.CreateAPIView, generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [JWTAuthentication]
@@ -29,3 +37,4 @@ class ProductDetailView(generics.CreateAPIView, generics.RetrieveUpdateDestroyAP
         if self.request.user.is_superuser:
             return Product.objects.all()
 
+        

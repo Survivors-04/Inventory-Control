@@ -14,10 +14,13 @@ class CategoryView( generics.ListAPIView):
 
 class CategoryDetailView(generics.RetrieveUpdateDestroyAPIView,generics.CreateAPIView):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
-
-
+    
     serializer_class = CategorySerilizer
+    
+    def get_queryset(self):
+        if self.request.user.is_superuser:
+            return Category.objects.all()
+
 
     
     def get_queryset(self):
