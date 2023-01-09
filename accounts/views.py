@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Account, CodeRegister
+from .models import Account
 from rest_framework import generics
 from .serializers import AccountSerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication

@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
 
-from .models import Account, CodeRegister
+from .models import Account
 
 class AccountSerializer(serializers.ModelSerializer):
 
@@ -31,13 +31,3 @@ class AccountSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             "password": {"write_only":True}
         }
-
-class CodeSerializers(serializers.ModelSerializer):
-    class Meta:
-        model = CodeRegister
-        fields = [
-            "id",
-            "code",
-            "account_id",
-        ]
-        read_only_fields = ["id", "account_id"]
