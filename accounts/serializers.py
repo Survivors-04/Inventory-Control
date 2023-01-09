@@ -41,3 +41,12 @@ class CodeSerializers(serializers.ModelSerializer):
             "account_id",
         ]
         read_only_fields = ["id", "account_id"]
+
+
+class LoginSerializer(serializers.Serializer):
+    email    = serializers.EmailField(write_only=True)
+    password = serializers.CharField(write_only=True)
+    @classmethod
+    def get_token(cls,user):
+        token = super().get_token(user)
+        token['is_superuser'] = user.is_superuser
