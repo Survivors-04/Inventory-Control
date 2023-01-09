@@ -7,4 +7,5 @@ urlpatterns = [
     path("accounts/<int:pk>/", views.AccountDetailedView.as_view()),
     path("codes/<int:pk>/", views.CodeView.as_view()),
     path("accounts/login/", views.LoginView.as_view()),
+
 ]
