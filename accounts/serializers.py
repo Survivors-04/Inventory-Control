@@ -31,3 +31,14 @@ class AccountSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             "password": {"write_only":True}
         }
+
+
+
+class LoginSerializer(serializers.Serializer):
+    email    = serializers.EmailField(write_only=True)
+    password = serializers.CharField(write_only=True)
+    @classmethod
+    def get_token(cls,user):
+        token = super().get_token(user)
+        token['is_superuser'] = user.is_superuser
+
