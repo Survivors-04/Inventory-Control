@@ -35,8 +35,10 @@ class AccountSerializer(serializers.ModelSerializer):
 
 
 class LoginSerializer(serializers.Serializer):
+
     email    = serializers.EmailField(write_only=True)
     password = serializers.CharField(write_only=True)
+    
     @classmethod
     def get_token(cls,user):
         token = super().get_token(user)

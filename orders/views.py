@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from .permissions import IsManagerOrOrderOwner
 from accounts.permissions import IsManager
 
+from ..utils.email import SendEmail
 
 
 class OrderManagerView(generics.UpdateAPIView,generics.DestroyAPIView, generics.ListAPIView):
@@ -14,11 +15,8 @@ class OrderManagerView(generics.UpdateAPIView,generics.DestroyAPIView, generics.
     authentication_classes = [JWTAuthentication]
     permission_classes     = [IsAuthenticated, IsManager]
 
-
     serializer_class = OrderSerializer
-
-
-    queryset = Order.objects.all()
+    queryset         = Order.objects.all()
     
 
     def perform_create(self, serializer):
@@ -26,18 +24,17 @@ class OrderManagerView(generics.UpdateAPIView,generics.DestroyAPIView, generics.
 
 
 class OrderUserView(generics.CreateAPIView, generics.RetrieveAPIView):
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated, IsManagerOrOrderOwner]
-
-
-class OrderUserView(generics.CreateAPIView, generics.RetrieveAPIView):
     
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated, IsManagerOrOrderOwner]
+    permission_classes     = [IsAuthenticated, IsManagerOrOrderOwner]
 
     serializer_class = OrderSerializer
+
+
     def get_queryset(self):
+
         if self.request.method is "POST" and not self.request.user.is_superuser:
             return Order.objects.all()
+            
         return Order.objects.all()
 
