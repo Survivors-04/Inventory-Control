@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
 
-from .models import Account, CodeRegister
+from .models import Account
 
 class AccountSerializer(serializers.ModelSerializer):
 
@@ -32,15 +32,6 @@ class AccountSerializer(serializers.ModelSerializer):
             "password": {"write_only":True}
         }
 
-class CodeSerializers(serializers.ModelSerializer):
-    class Meta:
-        model = CodeRegister
-        fields = [
-            "id",
-            "code",
-            "account_id",
-        ]
-        read_only_fields = ["id", "account_id"]
 
 
 class LoginSerializer(serializers.Serializer):
@@ -50,3 +41,4 @@ class LoginSerializer(serializers.Serializer):
     def get_token(cls,user):
         token = super().get_token(user)
         token['is_superuser'] = user.is_superuser
+
