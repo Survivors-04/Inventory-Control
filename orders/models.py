@@ -5,6 +5,7 @@ from accounts.models import Account
 
 
 class Order(models.Model):
+
     id              = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created_at      = models.DateField(auto_now_add=True, null=False)
     sent_at         = models.DateField(null=True)

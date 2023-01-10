@@ -11,10 +11,7 @@ from ..utils.email import SendEmail
 
 
 class AccountView(generics.ListCreateAPIView):
-
-    authentication_classes = [JWTAuthentication]
-    permission_classes     = [IsAuthenticated, IsManager]
-
+   
     serializer_class = AccountSerializer
     queryset         = Account.objects.all()
 
@@ -51,8 +48,8 @@ class LoginView(APIView):
 
         refresh = RefreshToken.for_user(account)
         token = {
-            "refresh": refresh,
-            "access": refresh.access_token,
+            "refresh": str(refresh),
+            "access": str(refresh.access_token),
         }
         
         return Response(token)
