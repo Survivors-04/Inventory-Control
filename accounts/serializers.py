@@ -20,7 +20,7 @@ class AccountSerializer(serializers.ModelSerializer):
         model = Account
         fields = [
             "id",
-            "name",
+            "username",
             "cpf",
             "email",
             "telephone",
@@ -32,6 +32,22 @@ class AccountSerializer(serializers.ModelSerializer):
             "password": {"write_only":True}
         }
 
+    def create(self, validated_data):
+        if validated_data["is_superuser"] == True:
+            return Account.objects.create_superuser(**validated_data)
+
+        return Account.objects.create_user(**validated_data)
+
+    def update(self, instance: Account, validated_data: dict) -> Account:
+        for key, value in validated_data.items():
+            if key == "password":
+                instance.set_password(value)
+            else:
+                setattr(instance, key, value)
+
+        instance.save()
+
+        return instance
 
 
 class LoginSerializer(serializers.Serializer):

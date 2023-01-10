@@ -11,9 +11,9 @@ from django.contrib.auth import authenticate
 
 
 
+
 class AccountView(generics.ListCreateAPIView):
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated, IsManager]
+   
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
 
@@ -44,8 +44,8 @@ class LoginView(APIView):
             )
         refresh = RefreshToken.for_user(account)
         token = {
-            "refresh": refresh,
-            "access": refresh.access_token,
+            "refresh": str(refresh),
+            "access": str(refresh.access_token),
         }
         return Response(token)
 

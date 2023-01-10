@@ -8,7 +8,7 @@ class Order(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created_at = models.DateField(auto_now_add=True, null=False)
     sent_at = models.DateField(null=True)
-    total_price = models.DecimalField(max_digits=10, decimal_places=2, null=False)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, null=True)
     amount = models.IntegerField(null=False)
     is_active = models.BooleanField(default=True)
     is_sent = models.BooleanField(default=False)

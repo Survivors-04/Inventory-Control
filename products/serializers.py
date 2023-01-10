@@ -13,13 +13,14 @@ class ProductSerializer(serializers.ModelSerializer):
             "description",
             "price",
             "amount",
-            "category_id",
+            "category",
             "account_id",
         ] 
         read_only_fields = ["id", "account_id",]
 
     
     def create(self, validated_data:dict)-> Product:
+        
         return Product.objects.create(**validated_data)
 
 
