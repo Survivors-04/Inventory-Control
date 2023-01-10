@@ -10,8 +10,6 @@ from accounts.permissions import IsManager
 from django.shortcuts import get_object_or_404
 import ipdb
 
-from ..utils.email import SendEmail
-
 
 class OrderView(generics.ListCreateAPIView):
 
@@ -35,8 +33,7 @@ class OrderView(generics.ListCreateAPIView):
 class OrderDetailView(generics.RetrieveUpdateDestroyAPIView):
     
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated, IsMethodPatchDeleteOrder]
+    permission_classes     = [IsAuthenticated, IsMethodPatchDeleteOrder]
 
     serializer_class = OrderSerializer
-    queryset = Order.objects.all()
-
+    queryset         = Order.objects.all()
