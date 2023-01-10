@@ -1,5 +1,5 @@
 from rest_framework import generics
-from .serializers import OrderSerializer
+from .serializers import OrderSerializer, OrderUpdateSerializer
 from .models import Order
 from products.models import Product
 
@@ -35,7 +35,7 @@ class OrderDetailView(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated, IsMethodPatchDeleteOrder]
 
-    serializer_class = OrderSerializer
+    serializer_class = OrderUpdateSerializer
     queryset = Order.objects.all()
         
     
