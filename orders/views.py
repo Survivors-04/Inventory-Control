@@ -11,7 +11,6 @@ from django.shortcuts import get_object_or_404
 import ipdb
 
 
-
 class OrderView(generics.ListCreateAPIView):
 
     authentication_classes = [JWTAuthentication]
@@ -25,17 +24,22 @@ class OrderView(generics.ListCreateAPIView):
             return Order.objects.all()
         return Order.objects.filter(account=self.request.user)
         
+
     def perform_create(self, serializer):
 
-           
-        serializer.save(account=self.request.user)
+        for id in self.request.data["product"]:
+            prod = get_object_or_404(Product, id=id)
+            amount_x_price = prod.price * self.request.data["amount"]
+
+        serializer.save(account=self.request.user, 
+                        total_price=amount_x_price)
+
 
 class OrderDetailView(generics.RetrieveUpdateDestroyAPIView):
     
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated, IsMethodPatchDeleteOrder]
+    permission_classes     = [IsAuthenticated, IsMethodPatchDeleteOrder]
 
     serializer_class = OrderUpdateSerializer
-    queryset = Order.objects.all()
-        
+    queryset         = Order.objects.all()
     
