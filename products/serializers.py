@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from categories.serializers import CategorySerilizer
 from .models import Product
 
 
@@ -6,7 +7,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model  = Product
-
+        
         fields = [
             "id",
             "name",
@@ -16,8 +17,9 @@ class ProductSerializer(serializers.ModelSerializer):
             "category",
             "account_id",
         ] 
-        read_only_fields = ["id", "account_id",]
-
+        
+        read_only_fields = ["id", "account_id"]
+        depth = 1
     
     def create(self, validated_data:dict)-> Product:
         
