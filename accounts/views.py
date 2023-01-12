@@ -7,7 +7,6 @@ from .permissions import IsAccountOwner, IsManager
 from rest_framework.views import APIView, Request, Response, status
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
-from ..utils.email import SendEmail
 
 
 class AccountView(generics.ListCreateAPIView):
