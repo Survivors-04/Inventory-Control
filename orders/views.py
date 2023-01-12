@@ -1,13 +1,15 @@
+from rest_framework.views import  Request, Response, status
 from rest_framework import generics
 from .serializers import OrderSerializer, OrderUpdateSerializer
 from .models import Order
 from products.models import Product
+from django.shortcuts import get_object_or_404
 
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
-from .permissions import IsManagerOrOrderOwner, IsMethodPatchDeleteOrder, IsMethodPostOrder
+from .permissions import IsManagerOrOrderOwner, IsMethodPostOrder
+from .error.errors import InvalidValueUpdate
 from accounts.permissions import IsManager
-from django.shortcuts import get_object_or_404
 import ipdb
 
 
@@ -35,11 +37,27 @@ class OrderView(generics.ListCreateAPIView):
                         total_price=amount_x_price)
 
 
-class OrderDetailView(generics.RetrieveUpdateDestroyAPIView):
+class OrderDetailView(generics.RetrieveDestroyAPIView):
     
     authentication_classes = [JWTAuthentication]
-    permission_classes     = [IsAuthenticated, IsMethodPatchDeleteOrder]
+
+    permission_classes = [IsAuthenticated]
+
+    serializer_class = OrderSerializer
+    queryset = Order.objects.all()
+
+class SendOrderView(generics.UpdateAPIView):
+
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
     serializer_class = OrderUpdateSerializer
-    queryset         = Order.objects.all()
-    
+    queryset = Order.objects.all()
+
+    def perform_update(self, serializer):
+        
+        if self.request.data["is_active"] == True or self.request.data["is_sent"] == False:
+            
+            raise InvalidValueUpdate("não é possivel atualizar este campo")
+        
+        serializer.save(name_dispatcher=self.request.user.username)

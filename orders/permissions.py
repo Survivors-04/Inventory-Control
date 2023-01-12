@@ -9,15 +9,15 @@ class IsManagerOrOrderOwner(permissions.BasePermission):
         return obj.account == request.user or request.user.is_superuser
 
 
-class IsMethodPatchDeleteOrder(permissions.BasePermission):
-    def has_permission(self, request, view:View):
-        if (
-            request.method == "PATCH"
-            and request.user.is_superuser
-            or request.method == "DELETE"
-            and request.user.is_superuser
-        ):
-            return True
+# class IsMethodPatchDeleteOrder(permissions.BasePermission):
+#     def has_permission(self, request, view:View):
+#         if (
+#             request.method == "PATCH"
+#             and request.user.is_superuser
+#             or request.method == "DELETE"
+#             and request.user.is_superuser
+#         ):
+#             return True
 
 class IsMethodPostOrder(permissions.BasePermission):
     def has_permission(self, request: Request, view:View):
