@@ -79,4 +79,5 @@ class OrderUpdateSerializer(serializers.ModelSerializer):
             order_id=order_id
         )
         email.send()
+        
         return instance
