@@ -33,7 +33,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["https://inventory-control-8sgc.onrender.com/", "0.0.0.0"]
 
 
 # Application definition
@@ -174,8 +174,8 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 SPECTACULAR_SETTINGS = {
-    "TITLE": "Your Project API",
-    "DESCRIPTION": "Your project description",
+    "TITLE": "Inventory Control",
+    "DESCRIPTION": "This is a software to help you to control your inventory",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
 }
