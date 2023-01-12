@@ -3,8 +3,9 @@ from rest_framework.views import  Request, Response, status
 from .models import Order
 from django.shortcuts import get_object_or_404
 from .models import Account
+
 from products.models import Product
-from utils.email import SendEmail
+from utils.email import Email
 import os
 import dotenv
 import ipdb
@@ -36,11 +37,12 @@ class OrderSerializer(serializers.ModelSerializer):
         ]
 
 
-def create(self, validated_data: dict) -> Order:
-    products = validated_data.pop("product")
-    order = Order.objects.create(**validated_data)
-    order.product.set(products)
-    return order
+
+    def create(self, validated_data: dict) -> Order:
+        products = validated_data.pop("product")
+        order = Order.objects.create(**validated_data)
+        order.product.set(products)
+        return order
 
 
 class OrderUpdateSerializer(serializers.ModelSerializer):
@@ -57,19 +59,19 @@ class OrderUpdateSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ["id", "total_price", "sent_at", "product", "name_dispatcher"]
 
+
     def update(self, instance, validated_data):
+
         for key, value in validated_data.items():
             if key == "is_active" or "is_sent" or "name_dispatcher":
                setattr(instance, key, value)
         instance.save()
 
-        order_owner = get_object_or_404(Account, pk=self["account_id"].value)
+        order_owner = get_object_or_404(Account, id=self["account_id"].value)
         
-        products = []
-        for product_id in self["product"].value:
-            product =  get_object_or_404(Product, pk=product_id)
-            products.append(product.name)
-            
+        product_id = self['product'].value[0]
+        product    =  get_object_or_404(Product, pk=product_id)
+
    
         sender = os.getenv("EMAIL_SENDER")
         password_email = os.getenv("APP_PASSWORD")
@@ -77,17 +79,15 @@ class OrderUpdateSerializer(serializers.ModelSerializer):
         subject = f"Seu pedido - "
         for prod in products:
                 subject  += f"{prod}"
+
         
-        id_order = self["id"]
-        message = f" Olá {order_owner.username} gostariamos de informar que seu pedido de  {id_order} acaba de ser enviado."
-        email = SendEmail(
-            sender=sender,
-            addressee=adressee,
+        order_id = self["id"].value
+
+        email = Email(
+            adressee=order_owner,
             subject=subject,
-            message=message,
-            password=password_email,
+            order_id=order_id
         )
         email.send()
+        
         return instance
-
-
