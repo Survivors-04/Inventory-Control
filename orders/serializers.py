@@ -5,12 +5,6 @@ from .models import Account
 
 from products.models import Product
 from utils.email import Email
-import os
-import dotenv
-import ipdb
-import json
-
-dotenv.load_dotenv()
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -46,7 +40,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
 class OrderUpdateSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Order
+        model  = Order
         fields = [
             "id",
             "is_active",
@@ -60,7 +54,7 @@ class OrderUpdateSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
 
         for key, value in validated_data.items():
-            if key == "is_active" or "is_sent":
+            if  key == "is_active" or "is_sent":
                 setattr(instance, key, value)
         instance.save()
 
