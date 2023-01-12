@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.views import  Request, Response, status
 from .models import Order
 from django.shortcuts import get_object_or_404
 from .models import Account
@@ -50,14 +51,16 @@ class OrderUpdateSerializer(serializers.ModelSerializer):
             "is_active",
             "is_sent",
             "account_id",
+            "name_dispatcher",
             "product",
+            
         ]
-        read_only_fields = ["id", "total_price", "sent_at", "product"]
+        read_only_fields = ["id", "total_price", "sent_at", "product", "name_dispatcher"]
 
     def update(self, instance, validated_data):
         for key, value in validated_data.items():
-            if key == "is_active" or "is_sent":
-                setattr(instance, key, value)
+            if key == "is_active" or "is_sent" or "name_dispatcher":
+               setattr(instance, key, value)
         instance.save()
 
         order_owner = get_object_or_404(Account, pk=self["account_id"].value)
@@ -67,17 +70,13 @@ class OrderUpdateSerializer(serializers.ModelSerializer):
             product =  get_object_or_404(Product, pk=product_id)
             products.append(product.name)
             
-
-        # products = 
-        # sender   = self.request.user.email
+   
         sender = os.getenv("EMAIL_SENDER")
         password_email = os.getenv("APP_PASSWORD")
-        adressee = order_owner.email
-        # ipdb.set_trace()
-    
+        adressee = order_owner.email   
         subject = f"Seu pedido - "
         for prod in products:
-                subject  += f"{prod} "
+                subject  += f"{prod}"
         
         id_order = self["id"]
         message = f" Olá {order_owner.username} gostariamos de informar que seu pedido de  {id_order} acaba de ser enviado."

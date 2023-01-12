@@ -14,10 +14,6 @@ class CategoryView(generics.ListAPIView, generics.CreateAPIView):
     serializer_class = CategorySerilizer
     queryset = Category.objects.all()
 
-   
-
-
-
 class CategoryDetailView(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated,IsManager ]
